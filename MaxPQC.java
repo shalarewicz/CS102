@@ -41,19 +41,16 @@ public void insert(Key key){
   Node child = new Node();
   child.info = key;
   if (isEmpty()) { this.top = child;
-    // child.up = this.top; 
-    // top.right = child;
-    // top.left = child;
     size++;
     return;
   }
   Node parent = findNode(this.size / 2);
   child.up = parent;
   size++;
-  if (this.size % 2 == 1) {
-    parent.right = child;
-  } else {
+  if (this.size % 2 == 0) {
     parent.left = child;
+  } else if (this.size % 2 == 1){
+    parent.right = child;
   }
   swim(child);
 }
@@ -97,10 +94,10 @@ public void insert(Key key){
      String s = "The MaxPQ from top to bottom reads ";
      while (!queue.isEmpty()){
       Node next = queue.popRight();
-      // try{ 
+      try{ 
         s = s + next.info + ", ";
-      // }
-      // catch (NullPointerException x){return s;}
+      }
+      catch (NullPointerException x){}
       try{
         queue.pushLeft(next.left);
       }
@@ -160,12 +157,12 @@ public void insert(Key key){
 
     private void swim(Node child){
       Node parent = child.up;
-      if (parent == top) return;
       Key parentInfo = parent.info;
       Key childInfo = child.info;
       if (greater(childInfo, parentInfo)){
         parent.info = childInfo;
         child.info = parentInfo;
+        if (parent == top) return;
         swim(parent);
       }
     }
@@ -179,6 +176,7 @@ public void insert(Key key){
      pq.insert(7);
      pq.insert(6);
      pq.insert(15);
+     pq.insert(1);
      System.out.println("After inserts " + pq.toString());
      // pq.delMax();
      // System.out.println("After deledtion " + pq.toString());
