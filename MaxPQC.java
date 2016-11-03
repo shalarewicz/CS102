@@ -112,6 +112,18 @@ public class MaxPQC<Key extends Comparable<Key>> implements MaxPQ<Key>{
      return;
     }
 
+    private void swim(Node child){
+      Node parent = child.up;
+      if (parent == top) return;
+      Key parentInfo = parent.info;
+      Key childInfo = child.info;
+      if (greater(childInfo, parentInfo)){
+        parent.info = childInfo;
+        child.info = parentInfo;
+        swim(parent);
+      }
+    }
+
     public static void main(String[] args){
      MaxPQ<Integer> pq = new MaxPQC<Integer>();
 
