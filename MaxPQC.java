@@ -28,19 +28,20 @@ public class MaxPQC<Key extends Comparable<Key>> implements MaxPQ<Key>{
 // Client Methods
 
  public Key delMax(){
-  Node max = top.right;
-  Key ans = max.info;
-  max.info = null;
+  Node max = this.top;
+  Key maxInfo = max.info;
+  Node last = findNode(size);
+  exchange(max, last);
   sink(max);
-  max = null;
-  return ans;
+  return maxInfo;
 
  }
 
 public void insert(Key key){
   Node child = new Node();
   child.info = key;
-  if (isEmpty()) { this.top = child;
+  if (isEmpty()) { 
+    this.top = child;
     size++;
     return;
   }
@@ -95,7 +96,7 @@ public void insert(Key key){
      while (!queue.isEmpty()){
       Node next = queue.popRight();
       try{ 
-        s = s + next.info + ", ";
+        s = s + ", " + next.info;
       }
       catch (NullPointerException x){}
       try{
@@ -135,22 +136,28 @@ public void insert(Key key){
      Node left = x.left;
      Node right = x.right;
      if (greater(left.info, right.info) && greater(left.info, x.info)) {
-      x.left = left.left;
-      x.right = left.right;
-      left.up = x.up;
-      x.up = left;
-      left.left = x;
-      left.right = right;
-      sink(x); return;
+      exchange(x, left);
+      sink(left);
+      return;
+      // x.left = left.left;
+      // x.right = left.right;
+      // left.up = x.up;
+      // x.up = left;
+      // left.left = x;
+      // left.right = right;
+      // sink(x); return;
      }
      if (greater(right.info, left.info) && greater(right.info, x.info)) {
-      x.left = right.left;
-      x.right = right.right;
-      right.up = x.up;
-      x.up = right;
-      right.right = x;
-      right.left = left;
-      sink(x); return;
+      exchange(x, right);
+      sink(right);
+      return;
+      // x.left = right.left;
+      // x.right = right.right;
+      // right.up = x.up;
+      // x.up = right;
+      // right.right = x;
+      // right.left = left;
+      // sink(x); return;
      }
      return;
     }
@@ -165,6 +172,13 @@ public void insert(Key key){
         if (parent == top) return;
         swim(parent);
       }
+    }
+
+    private void exchange(Node parent, Node child){
+      Key parentInfo = parent.info;
+      Key childInfo = child.info;
+      parent.info = childInfo;
+      child.info = parentInfo;
     }
 
     public static void main(String[] args){
