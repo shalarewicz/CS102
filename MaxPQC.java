@@ -3,6 +3,10 @@
 // date: October 28th, 2016
 //
 // Implementation for MaxPQ.java API
+// 
+// Dependencies ResizaingArrayStack.java, LinkedDeque.java
+// compile with javac-algs4 MaxPQC.java
+// run with java-algs4 MaxPQC.java
 
 import java.util.*; 
 
@@ -30,11 +34,13 @@ public class MaxPQC<Key extends Comparable<Key>> implements MaxPQ<Key>{
  public Key delMax(){
   Node max = this.top;
   Key maxInfo = max.info;
+  if (size == 1) {this.top = null; size--; return max.info;}
   Node last = findNode(size);
   exchange(max, last);
   Node parentLast = findNode(size / 2); 
   if (size % 2 == 1) parentLast.right = null;
   if (size % 2 == 0) parentLast.left = null;
+  size--;
   sink(max);
   return maxInfo;
 
@@ -60,34 +66,29 @@ public void insert(Key key){
 }
 
     public boolean isEmpty(){
-     return size == 0;
+     return this.size == 0;
     }
 
     public int size(){
-     return size;
+     return this.size;
     }
 
     public String toString(){
-     LinkedDeque<Node> queue = new LinkedDeque<Node>();
-     Node start = findNode(1);
-     queue.pushLeft(start);
-     String s = "The MaxPQ from top to bottom reads";
-     while (!queue.isEmpty()){
-      Node next = queue.popRight();
-      try{ 
-        s = s + " " + next.info;
+      if (isEmpty()) return "The priority queue is empty.";
+      else{
+        String sz = "The MaxPQ has size = " + this.size + ". ";
+        String s = sz + "The MaxPQ from top to bottom reads"; 
+        LinkedDeque<Node> queue = new LinkedDeque<Node>();
+        Node start = findNode(1);
+        queue.pushLeft(start);
+        while (!queue.isEmpty()){
+          Node next = queue.popRight();
+            s = s + " " + next.info;
+            if (next.left != null) queue.pushLeft(next.left);
+            if (next.right != null) queue.pushLeft(next.right);
+          }
+        return s + ".";
       }
-      catch (NullPointerException x){}
-      try{
-        queue.pushLeft(next.left);
-      }
-      catch (NullPointerException x){}
-      try{
-        queue.pushLeft(next.right);
-      }
-      catch (NullPointerException x){}
-     }
-     return s + ".";
     }
 
 // Helpers
@@ -112,33 +113,19 @@ public void insert(Key key){
     }
 
     private void sink(Node x){
+     if (isLeaf(x)) return;
      Node left = x.left;
      Node right = x.right;
-     if (greater(left.info, right.info) && greater(left.info, x.info)) {
-      exchange(x, left);
-      sink(left);
-      return;
-      // x.left = left.left;
-      // x.right = left.right;
-      // left.up = x.up;
-      // x.up = left;
-      // left.left = x;
-      // left.right = right;
-      // sink(x); return;
-     }
-     if (greater(right.info, left.info) && greater(right.info, x.info)) {
+     if (right != null && greater(right.info, left.info) && greater(right.info, x.info)){
       exchange(x, right);
       sink(right);
       return;
-      // x.left = right.left;
-      // x.right = right.right;
-      // right.up = x.up;
-      // x.up = right;
-      // right.right = x;
-      // right.left = left;
-      // sink(x); return;
      }
-     return;
+     if (greater(left.info, x.info)) {
+      exchange(x, left);
+      sink(left);
+      return;
+     }
     }
 
     private void swim(Node child){
@@ -160,6 +147,10 @@ public void insert(Key key){
       child.info = parentInfo;
     }
 
+    private boolean isLeaf(Node x){
+      return (x.left == null) && (x.right == null);
+    }
+
     public static void main(String[] args){
      MaxPQ<Integer> pq = new MaxPQC<Integer>();
 
@@ -171,7 +162,10 @@ public void insert(Key key){
      pq.insert(15);
      pq.insert(2);
      System.out.println("After inserts " + pq.toString());
-     System.out.println(pq.delMax() + " was deleted");
-     System.out.println("After deledtion " + pq.toString());
+     while(!pq.isEmpty()){
+      System.out.println(pq.delMax() + " was deleted");
+      System.out.println("After deletion " + pq.toString());
+      System.out.println("After deletion the size is " + pq.size());
+     }
     }
 }
