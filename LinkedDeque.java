@@ -1,3 +1,13 @@
+// name: LinkedDeque.java
+// author: Stephan Halarewicz
+// date September 2016
+// 
+// Linked List implementation of Deque.java
+// Dependecies algs4 library
+// 
+// compile with javac-algs4 LinkedDeque.java
+// run with java-algs4 LinkedDeque.java
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -121,6 +131,8 @@ public class LinkedDeque<T> implements Deque<T>, Iterable<T>{
   StdOut.println(deque.popLeft()); 
   StdOut.println(deque.toString());
   deque.pushRight("right"); StdOut.println(deque.toString());
+  StdOut.println(deque.popRight()); 
+  StdOut.println(deque.toString());
   StdOut.println(deque.popRight()); 
   StdOut.println(deque.toString());
   StdOut.println("Size: " + deque.size());
