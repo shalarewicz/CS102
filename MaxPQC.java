@@ -32,6 +32,9 @@ public class MaxPQC<Key extends Comparable<Key>> implements MaxPQ<Key>{
   Key maxInfo = max.info;
   Node last = findNode(size);
   exchange(max, last);
+  Node parentLast = findNode(size / 2); 
+  if (size % 2 == 1) parentLast.right = null;
+  if (size % 2 == 0) parentLast.left = null;
   sink(max);
   return maxInfo;
 
@@ -45,9 +48,9 @@ public void insert(Key key){
     size++;
     return;
   }
+  size++;
   Node parent = findNode(this.size / 2);
   child.up = parent;
-  size++;
   if (this.size % 2 == 0) {
     parent.left = child;
   } else if (this.size % 2 == 1){
@@ -55,30 +58,6 @@ public void insert(Key key){
   }
   swim(child);
 }
-
-    // public void insert(Key key){
-    //  Node toInsert = new Node();
-    //  toInsert.info = key;
-    //  if (isEmpty()){
-    //    this.top = toInsert;
-    //    // top.left = toInsert;
-    //    top.up = null;
-    //    size++;
-    //  } else {
-    //   Node oldTop = top;
-    //   toInsert.left = oldTop.left;
-    //   toInsert.right = oldTop.right;    
-    //   if (greater(key, oldTop.info)) {
-    //    top.right = toInsert;
-    //    // top.left = toInsert;
-    //    toInsert.up = top;
-    //    sink(oldTop);
-    //    // oldTop = null;
-    //   }
-    //   else sink(toInsert);
-    //   size++;
-    //  }
-    // }
 
     public boolean isEmpty(){
      return size == 0;
@@ -90,13 +69,13 @@ public void insert(Key key){
 
     public String toString(){
      LinkedDeque<Node> queue = new LinkedDeque<Node>();
-     Node start = findNode(0);
+     Node start = findNode(1);
      queue.pushLeft(start);
-     String s = "The MaxPQ from top to bottom reads ";
+     String s = "The MaxPQ from top to bottom reads";
      while (!queue.isEmpty()){
       Node next = queue.popRight();
       try{ 
-        s = s + ", " + next.info;
+        s = s + " " + next.info;
       }
       catch (NullPointerException x){}
       try{
@@ -119,15 +98,15 @@ public void insert(Key key){
     private Node findNode(int x){
       ResizingArrayStack<Integer> route = new ResizingArrayStack<Integer>();
       int i = x;
-      while(i > 0){
+      while(i > 1){
         route.push(i % 2);
         i /= 2;
       }
       Node start = this.top;
       while (!route.isEmpty()){
         int next = route.pop();
-        if (next == 1) start = start.left;
-        if (next == 0) start = start.right;
+        if (next == 0) start = start.left;
+        if (next == 1) start = start.right;
       }
       return start;
     }
@@ -190,9 +169,9 @@ public void insert(Key key){
      pq.insert(7);
      pq.insert(6);
      pq.insert(15);
-     pq.insert(1);
+     pq.insert(2);
      System.out.println("After inserts " + pq.toString());
-     // pq.delMax();
-     // System.out.println("After deledtion " + pq.toString());
+     System.out.println(pq.delMax() + " was deleted");
+     System.out.println("After deledtion " + pq.toString());
     }
 }
