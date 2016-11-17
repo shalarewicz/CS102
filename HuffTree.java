@@ -9,6 +9,12 @@
 // run with java HuffTree
 // Dependencies: ?
 
-public interface Hufftree{
+public interface HuffTree<Key extends Comparable<Key>>{
+	public boolean isEmpty();
+	public int size();
+	public int weight();
+	public int compareTo(HuffTreeC<Key> x);
+	public ResizingArrayStack<BitPath> bitPaths();
+
 	
 }
