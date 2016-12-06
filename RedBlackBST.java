@@ -1,9 +1,3 @@
-RedBlackBST.java
-
-
-Below is the syntax highlighted version of RedBlackBST.java from §3.3 Balanced Search Trees.
-
-
 /******************************************************************************
  *  Compilation:  javac RedBlackBST.java
  *  Execution:    java RedBlackBST < input.txt
@@ -47,7 +41,7 @@ import java.util.NoSuchElementException;
  *  when associating a value with a key that is already in the symbol table,
  *  the convention is to replace the old value with the new value.
  *  Unlike {@link java.util.Map}, this class uses the convention that
- *  values cannot be {@code null}—setting the
+ *  values cannot be {@code null}�setting the
  *  value associated with a key to {@code null} is equivalent to deleting the key
  *  from the symbol table.
  *  <p>
@@ -708,6 +702,14 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      *
      * @param args the command-line arguments
      */
+
+//    public String toString(){
+//        String s = "";
+//        for (Key key : this){
+//            s = s + "(" + key + ", " + this.get(key) + ")";
+//        }
+//    return s;
+//    }
     public static void main(String[] args) { 
         RedBlackBST<String, Integer> st = new RedBlackBST<String, Integer>();
         for (int i = 0; !StdIn.isEmpty(); i++) {
@@ -719,7 +721,3 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         StdOut.println();
     }
 }
-
-
-Copyright © 2000–2016, Robert Sedgewick and Kevin Wayne. 
-Last updated: Wed Nov 2 05:25:05 EDT 2016.
