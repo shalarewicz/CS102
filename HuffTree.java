@@ -9,6 +9,18 @@
 // run with java HuffTree
 // Dependencies: ?
 
-public interface Hufftree{
-	
+// public interface HuffTree<Key extends java.lang.Comparable<Key>>{
+//  public boolean isEmpty();
+//  public int weight();
+//  public int compareTo(Object x);
+//  public RedBlackBST<Key, String> bitPaths(RedBlackBST<Key, String> st);
+//  public String toString(); 
+// }
+
+public interface HuffTree{
+ public boolean isEmpty();
+ public int weight();
+ public int compareTo(Object x);
+ public void bitPaths(RedBlackBST<Integer, HuffCode> st);
+ public String toString(); 
 }
