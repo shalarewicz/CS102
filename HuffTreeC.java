@@ -245,14 +245,14 @@ public class HuffTreeC implements HuffTree, Comparable{
         if (this.isLeaf()) {
             HuffCode current = st.get(this.symbol);
             current.updateBitString(path);
-            System.out.println("Updating " + this.symbol + " with " + current.toString());
+            //System.out.println("Updating " + this.symbol + " with " + current.toString());
             st.put(this.symbol, current);
-            System.out.print("The st now reads ");
-            for (Integer key : st.keys()){
-                System.out.print("(" + key + ", " + st.get(key) + ") ");
-            }
-            System.out.println();
-            System.out.println();
+            //System.out.print("The st now reads ");
+            // for (Integer key : st.keys()){
+            //     System.out.print("(" + key + ", " + st.get(key) + ") ");
+            // }
+            // System.out.println();
+            // System.out.println();
 
 
 

@@ -37,17 +37,19 @@ public class Huff{
         MinPQ<HuffTreeC> pq = new MinPQ<HuffTreeC>();
         for (Integer key : st.keys()){
             HuffTreeC leaf = new HuffTreeC(key, st.get(key).frequency());
-            System.out.println("Adding leaf " + leaf.toString() + "with weight " + leaf.weight() + " to pq.");
+            System.out.println("Adding leaf " + leaf.toString() + " to pq.");
             pq.insert(leaf);
         }
+        System.out.println(pq.toString());
 
         while(pq.size() > 1){
             HuffTreeC t1 = pq.delMin();
             HuffTreeC t2 = pq.delMin();
             HuffTreeC t = new HuffTreeC(t1, t2);
             pq.insert(t);
-            System.out.println("Merging " + t1.toString() + " and " + t2.toString());
-            System.out.println("Adding to pq " + t.toString());
+            if (t1.weight() == 293 || t2. weight() == 293) System.out.println("Merging " + t1.toString() + " and " + t2.toString());
+            // System.out.println("Merging " + t1.toString() + " and " + t2.toString());
+            // System.out.println("Adding to pq " + t.toString());
         }
         return pq.delMin();
 
@@ -75,25 +77,25 @@ public static void write(RedBlackBST<Integer, HuffCode> st, String filename){
 	    String path = st.get(current).bitString();
 	    int bits = 0;
 	    int size = path.length();
-	    System.out.println("String reads " + path + " length is " + size);
+	    //System.out.println("String reads " + path + " length is " + size);
 	    for (int i = 0; i < size; i++){
 	    	int bit = 0;
 	    	char c = path.charAt(i);
-	    	System.out.println("Parsing char " + c);
-	    	if (c == '1') {bit = 1; System.out.println("Turned bit on");}
+	    	//System.out.println("Parsing char " + c);
+	    	if (c == '1') {bit = 1;} //System.out.println("Turned bit on");}
 	    	bits = (bits << 1) | bit;
-	    	System.out.println("Added bit " + bit + " to bits " + bits);
-	    	System.out.println("Size incremented to " + size);
+	    	//System.out.println("Added bit " + bit + " to bits " + bits);
+	    	//System.out.println("Size incremented to " + size);
 
 	    }
-	    System.out.println("Writing bits " + bits + " and size " + size);
-	    System.out.println();
+	    //System.out.println("Writing bits " + bits + " and size " + size);
+	    //System.out.println();
 	    output.write(bits, size);
-		output.flush();
-		output.close();
 		}	
 	    catch (IOException e){System.out.println("Caught this exception" + e);}
 	}
+		output.flush();
+		output.close();
 
 
 }
@@ -102,10 +104,10 @@ public static void write(RedBlackBST<Integer, HuffCode> st, String filename){
  public static void main(String[] args){
   String filename = args[0];
   RedBlackBST<Integer, HuffCode> st = readIn(filename);
-  for (Integer key : st.keys()){
-            System.out.print("(" + key + ", " + st.get(key) + ") ");
-        }
-        System.out.println();
+  // for (Integer key : st.keys()){
+  //           System.out.print("(" + key + ", " + st.get(key) + ") ");
+  //       }
+  //       System.out.println();
   HuffTreeC finalTree = createFinal(st);
   System.out.println(finalTree.toString());
   finalTree.bitPaths(st);
