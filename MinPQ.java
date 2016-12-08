@@ -178,7 +178,13 @@ public class MinPQ<Key> implements Iterable<Key> {
         return min;
     }
 
-
+    public String toString(){
+    	String s = "";
+    	for (Key x : pq){
+    		s = s + x;
+    	}
+    	return s;
+    }
    /***************************************************************************
     * Helper functions to restore the heap invariant.
     ***************************************************************************/
@@ -203,6 +209,15 @@ public class MinPQ<Key> implements Iterable<Key> {
    /***************************************************************************
     * Helper functions for compares and swaps.
     ***************************************************************************/
+   private boolean equal(int i, int j){
+   		if (comparator == null) {
+            return ((Comparable<Key>) pq[i]).compareTo(pq[j]) == 0;
+        }
+        else {
+            return comparator.compare(pq[i], pq[j]) == 0;
+        }
+   }
+
     private boolean greater(int i, int j) {
         if (comparator == null) {
             return ((Comparable<Key>) pq[i]).compareTo(pq[j]) > 0;

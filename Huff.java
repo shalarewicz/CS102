@@ -40,16 +40,18 @@ public class Huff{
             System.out.println("Adding leaf " + leaf.toString() + " to pq.");
             pq.insert(leaf);
         }
-        System.out.println(pq.toString());
+        System.out.println("The pq has size " + pq.size());
+        System.out.println("The pq reads " + pq.toString());
+        System.out.println();
 
         while(pq.size() > 1){
             HuffTreeC t1 = pq.delMin();
             HuffTreeC t2 = pq.delMin();
             HuffTreeC t = new HuffTreeC(t1, t2);
             pq.insert(t);
-            if (t1.weight() == 293 || t2. weight() == 293) System.out.println("Merging " + t1.toString() + " and " + t2.toString());
-            // System.out.println("Merging " + t1.toString() + " and " + t2.toString());
-            // System.out.println("Adding to pq " + t.toString());
+            // if (t1.weight() == 293 || t2. weight() == 293) System.out.println("Merging " + t1.toString() + " and " + t2.toString());
+            System.out.println("Merging " + t1.toString() + " and " + t2.toString());
+            System.out.println("Adding to pq " + t.toString());
         }
         return pq.delMin();
 
@@ -109,7 +111,8 @@ public static void write(RedBlackBST<Integer, HuffCode> st, String filename){
   //       }
   //       System.out.println();
   HuffTreeC finalTree = createFinal(st);
-  System.out.println(finalTree.toString());
+  System.out.println("The final HuffTree is "+ finalTree.toString());
+  System.out.println();
   finalTree.bitPaths(st);
   write(st, filename);
 
