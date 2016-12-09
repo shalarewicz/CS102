@@ -2,7 +2,11 @@
 // author: Stephan Halarewicz
 // date: November 16th, 2016
 //
+<<<<<<< HEAD
 // Implementation for MaxPQ.java API
+=======
+// Implementation for MinPQ.java API
+>>>>>>> Huff
 // 
 // Dependencies ResizaingArrayStack.java, LinkedDeque.java
 // compile with javac-algs4 MinPQC.java

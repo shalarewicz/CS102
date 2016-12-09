@@ -2,97 +2,121 @@
 // author: Stephan Halarewicz
 // date: 11/15/2016
 // 
-// compile with javac Huff.java
-// run with java Huff "filename.txt"
+// compile with javac-algs4 Huff.java
+// run with java-algs4 Huff "filename.txt"
 // This results in a compressed zip file "filename.zip"
 //
-// Dependencies - BinaryTree.java,  FileIO.java, Queue.java
+// Dependencies - algs4 library RedBlackBST.java,  FileIO.java, MinPQ.java
+
+import java.io.*;
 
 public class Huff{
 
-	private BinaryTree readIn(String filename){
-		FileReader input = openInputFile(filename);
-		BinaryTree<HuffCode, int> st = new BinaryTree<HuffCode, int>(); // symbol table needs to be iterable for going into pq
-		while (!StdIn.isEmpty()){
-			// create BinaryTree<HuffCode, int> 
-			// object HuffCode encapsualtes int length and int code
-			// Value int is the frequency
-			char next = Char.parseChar();
-			HuffCode nextHuff = new HuffCode(next); // implement with HuffCode(){this.length = x, this.code = code}
-			// int frequency = st.get(next);
-			// if (frequency != null) frequency++;
-			// else 
-			st.put(next, frequency++); // might not work with null + 1 so each new node should by default be zero.
-									   // this might not be wortch the space compared to the time it saves optimize later.
-									   // can just use contains if needed
-			}
-		close(filename); // Need to figure out how to close the file. 		
-		return st;
+ public static final boolean DEBUG = false;
+ 
+ private static RedBlackBST<Integer, HuffCode> readIn(String filename){
+  RedBlackBST<Integer, HuffCode> st = new RedBlackBST<Integer, HuffCode>();
+
+  FileIO channel = new FileIOC();
+  FileReader input = channel.openInputFile(filename);
+  int current = 0;
+
+  while (current != -1){
+    try{
+        current = input.read();
+    }
+    catch (IOException e){}
+    if (current == -1) break;
+    if (st.contains(current)) st.get(current).increment();
+    else st.put(current, (new HuffCodeC("", 1)));
+  }
+  return st;
+ }
+
+  public static HuffTreeC createFinal(RedBlackBST<Integer, HuffCode> st){
+        MinPQ<HuffTreeC> pq = new MinPQ<HuffTreeC>();
+        for (Integer key : st.keys()){
+            HuffTreeC leaf = new HuffTreeC(key, st.get(key).frequency());
+            System.out.println("Adding leaf " + leaf.toString() + " to pq.");
+            pq.insert(leaf);
+        }
+        System.out.println("The pq has size " + pq.size());
+        System.out.println("The pq reads " + pq.toString());
+        System.out.println();
+
+        while(pq.size() > 1){
+            HuffTreeC t1 = pq.delMin();
+            HuffTreeC t2 = pq.delMin();
+            HuffTreeC t = new HuffTreeC(t1, t2);
+            pq.insert(t);
+            // if (t1.weight() == 293 || t2. weight() == 293) System.out.println("Merging " + t1.toString() + " and " + t2.toString());
+            System.out.println("Merging " + t1.toString() + " and " + t2.toString());
+            System.out.println("Adding to pq " + t.toString());
+        }
+        return pq.delMin();
+
+    }
+public static void write(RedBlackBST<Integer, HuffCode> st, String filename){
+	FileIO channel = new FileIOC();
+	FileReader input = channel.openInputFile(filename);
+	BinaryOut output = channel.openBinaryOutputFile();
+	int zipID = 0x0BC0;
+	output.write(zipID, 16);
+	output.write(st.size(), 32);
+	for (int key : st.keys()){
+		int frequency = st.get(key).frequency();
+		System.out.println("Writing (" + (char) key + ", " + frequency +")");
+		output.write(key, 8);
+		output.write(frequency, 32);
 	}
 
-	private class HuffTree{ // Nodes etc. 
+	int current = 0;
+
+  	while (current != -1){
+	    try{
+	        current = input.read();
+	    if (current == -1) break;
+	    String path = st.get(current).bitString();
+	    int bits = 0;
+	    int size = path.length();
+	    //System.out.println("String reads " + path + " length is " + size);
+	    for (int i = 0; i < size; i++){
+	    	int bit = 0;
+	    	char c = path.charAt(i);
+	    	//System.out.println("Parsing char " + c);
+	    	if (c == '1') {bit = 1;} //System.out.println("Turned bit on");}
+	    	bits = (bits << 1) | bit;
+	    	//System.out.println("Added bit " + bit + " to bits " + bits);
+	    	//System.out.println("Size incremented to " + size);
+
+	    }
+	    //System.out.println("Writing bits " + bits + " and size " + size);
+	    //System.out.println();
+	    output.write(bits, size);
+		}	
+	    catch (IOException e){System.out.println("Caught this exception" + e);}
 	}
-
-	private MaxPQC<HuffTree> createPQ(BinaryTree<HuffCode, int> st){
-		MaxPQC<HuffTree> pq = new MaxPQC<HuffTree>();
-		while (!st.isEmpty()){
-			HuffCode next = st.min();
-			int weight = st.get(next);
-			HuffTree toInsert = new HuffTree(null, next, weight, null); // HuffTree needs to be Comparable by weight (2 constructors?)
-			pq.insert(toInsert);
-		}
-		return pq;
-	}
-
-	private MaxPQC<HuffTree> collapse(){
-		while(this.size() >= 2){
-			HuffTree t1 = this.delMax();
-			HuffTree t2 = this.delMax();
-			int newWeight = t1.weight + t2.weight;
-			HuffTree t = new HuffTree(t1, null, newWeight, t2); // (2 constructors?)
-			this.insert(t);
-		}
-		return this;
-	}
-
-	private BinaryTree<HuffCode, int> write(HuffTree tree){ // move this into Huff tree class so you can use left and right nodes 
-															// might need to move collapse as well
-		// reucursive walk
-		Queue<HuffRoute> toTry = new Queue(); // Need new object to record path taken
-		HuffTree top = tree.root(); // not sure on type for top. might be a node
-		// need new object with node and bitpath for queue to keep track
-		toTry.enqueue(top); // need a better condidtion so you can change ST in for loop
-		int size = tree.size();
-		for (int i = 1, i < size, i++){
-			HuffTree parent = toTry.dequeue();
-			HuffTree left = parent.left; // this isn't a good idea and not part of the BST API
-			HuffTree right = parent.right;
-			if (isLeaf(left)) {
-				toTry.enqueue(left);
-				st.update(left); // just the basic idea also n
-		}
+		output.flush();
+		output.close();
 
 
+}
+ // Helper Functions
 
+ public static void main(String[] args){
+  String filename = args[0];
+  RedBlackBST<Integer, HuffCode> st = readIn(filename);
+  // for (Integer key : st.keys()){
+  //           System.out.print("(" + key + ", " + st.get(key) + ") ");
+  //       }
+  //       System.out.println();
+  HuffTreeC finalTree = createFinal(st);
+  System.out.println("The final HuffTree is "+ finalTree.toString());
+  System.out.println();
+  finalTree.bitPaths(st);
+  write(st, filename);
 
-	}
-
-
-	// Helper Functions
-
-	private static isLeaf(HuffTree x){
-		return (x.left == null && x.right == null);
-	}
-
-	public static void main(String[] args){
-		String filename = args[0];
-		BinaryTree<HuffCode, int> st = readIn(filename);
-		MaxPQC<HuffTree> pq = createPQ(st);
-		pq.collapse();
-		HuffTree finalTree = pq.delMax();
-		st.write(finalTree);
-
-	}
+ }
 
 }
 
