@@ -2,11 +2,11 @@
 // author: Stephan Halarewicz
 // date: 11/15/2016
 // 
-// compile with javac Huff.java
-// run with java Huff "filename.txt"
+// compile with javac-algs4 Huff.java
+// run with java-algs4 Huff "filename.txt"
 // This results in a compressed zip file "filename.zip"
 //
-// Dependencies - RedBlackBST.java,  FileIO.java, Queue.java
+// Dependencies - algs4 library RedBlackBST.java,  FileIO.java, MinPQ.java
 
 import java.io.*;
 
