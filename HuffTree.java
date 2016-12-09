@@ -23,4 +23,8 @@ public interface HuffTree{
  public int compareTo(Object x);
  public void bitPaths(RedBlackBST<Integer, HuffCode> st);
  public String toString(); 
+ public HuffTree getLeft();
+ public HuffTree getRight();
+ public boolean isLeaf();
+ public int getSymbol();
 }

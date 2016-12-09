@@ -35,6 +35,17 @@ public class HuffTreeC implements HuffTree, Comparable{
         this.weight = left.weight() + right.weight();
     }
 
+    public HuffTree getLeft(){
+    	return this.left;
+    }
+
+    public HuffTree getRight(){
+    	return this.right;
+    }
+
+    public int getSymbol(){
+        return this.symbol;
+    }
     // public HuffTreeC(RedBlackBST<Integer, HuffCode> st){
     //     MinPQ<HuffTreeC> pq = new MinPQ<HuffTreeC>();
     //     for (Integer key : st.keys()){
@@ -71,7 +82,7 @@ public class HuffTreeC implements HuffTree, Comparable{
         else return 0;
     }
 
-    private boolean isLeaf(){
+    public boolean isLeaf(){
         return (this.left == null && this.right == null);
     }
 
