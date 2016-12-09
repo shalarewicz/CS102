@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-// name MinPQ.java
-// author: Stephan Halarewicz
-// date: November 16th, 2016
-//
-// API for Minimum Priority Queue
-
-public interface MinPQ<Key extends Comparable<Key>> {
-    public Key delMin();
-    public void insert(Key key);
-    public boolean isEmpty();
-    public int size();
-    public String toString();
-}
-=======
 /******************************************************************************
  *  Compilation:  javac MinPQ.java
  *  Execution:    java MinPQ < input.txt
@@ -31,8 +16,6 @@ public interface MinPQ<Key extends Comparable<Key>> {
  *  (ala insertion sort).
  *
  ******************************************************************************/
-
-// package edu.princeton.cs.algs4;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -193,13 +176,7 @@ public class MinPQ<Key> implements Iterable<Key> {
         return min;
     }
 
-    public String toString(){
-    	String s = "";
-    	for (Key x : pq){
-    		s = s + x;
-    	}
-    	return s;
-    }
+
    /***************************************************************************
     * Helper functions to restore the heap invariant.
     ***************************************************************************/
@@ -224,15 +201,6 @@ public class MinPQ<Key> implements Iterable<Key> {
    /***************************************************************************
     * Helper functions for compares and swaps.
     ***************************************************************************/
-   private boolean equal(int i, int j){
-   		if (comparator == null) {
-            return ((Comparable<Key>) pq[i]).compareTo(pq[j]) == 0;
-        }
-        else {
-            return comparator.compare(pq[i], pq[j]) == 0;
-        }
-   }
-
     private boolean greater(int i, int j) {
         if (comparator == null) {
             return ((Comparable<Key>) pq[i]).compareTo(pq[j]) > 0;
@@ -312,28 +280,3 @@ public class MinPQ<Key> implements Iterable<Key> {
     }
 
 }
-
-/******************************************************************************
- *  Copyright 2002-2016, Robert Sedgewick and Kevin Wayne.
- *
- *  This file is part of algs4.jar, which accompanies the textbook
- *
- *      Algorithms, 4th edition by Robert Sedgewick and Kevin Wayne,
- *      Addison-Wesley Professional, 2011, ISBN 0-321-57351-X.
- *      http://algs4.cs.princeton.edu
- *
- *
- *  algs4.jar is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  algs4.jar is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with algs4.jar.  If not, see http://www.gnu.org/licenses.
- ******************************************************************************/
->>>>>>> Huff

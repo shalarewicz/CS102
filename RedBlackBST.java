@@ -702,14 +702,6 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      *
      * @param args the command-line arguments
      */
-
-//    public String toString(){
-//        String s = "";
-//        for (Key key : this){
-//            s = s + "(" + key + ", " + this.get(key) + ")";
-//        }
-//    return s;
-//    }
     public static void main(String[] args) { 
         RedBlackBST<String, Integer> st = new RedBlackBST<String, Integer>();
         for (int i = 0; !StdIn.isEmpty(); i++) {
