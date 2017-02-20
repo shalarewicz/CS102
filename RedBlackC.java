@@ -1,10 +1,10 @@
-// name: RedBlack.java
+// name: RedBlackC.java
 // author: Stephan Halarewicz
 // date: 12/13/2016
 //
 // This is the specification of a implementation RedBlack Tree.
 
-public class RedBlack<Key extends Comparable<Key>, Value> implements RedBlack<Key, Value>{
+public class RedBlackC<Key extends Comparable<Key>, Value> implements RedBlack<Key, Value>{
 	// Instance Variables
 	private int n;
 	private RedBlack<Key, Value> left;
@@ -14,6 +14,16 @@ public class RedBlack<Key extends Comparable<Key>, Value> implements RedBlack<Ke
 	private boolean color;
 
 	private final RED = true;
+
+	//Constructor
+	public RedBlackC(Key key, Value val, RedBlack left, RedBlack right, Color color){
+		this.key = key;
+		this.value = value;
+		this.left = left;
+		this.right= right;
+		this.color = color;
+		this.n = left.size() + right.size() + 1;
+	}
 		
 		
 	//Getters
@@ -31,11 +41,11 @@ public class RedBlack<Key extends Comparable<Key>, Value> implements RedBlack<Ke
 	}
 
 	public boolean isEmpty(){
-		return this.size() == 0;
+		return this.n == 0;
 	}
 	
 	public int size(){
-		return this.size();
+		return this.n;
 	}
 	
 	//Helpers
@@ -51,12 +61,27 @@ public class RedBlack<Key extends Comparable<Key>, Value> implements RedBlack<Ke
 	
 	public Value get(Key key){
 		Key current = this.getKey();
-		if (key.compareTo(current) < 0) left.get(current);
-		if (key.compareTo(current) > 0) right.get(current);
-		if (key.compareTo(current) == 0) return key;
+		if (key.compareTo(current) < 0) this.getLeft().get(key);
+		if (key.compareTo(current) > 0) this.getRight().get(key);
+		if (key.compareTo(current) == 0) return this.value;
+	}
+	
+	public boolean contains(Key key){
+		Key current = this.getKey();
+		if (key.compareTo(cuurent) < 0) this.getLeft().contains(key);
+		if (key.compareTo(current) > 0) this.getRight().ontains(key);
+		if (key.compareTo(current) == 0) return true;
+		else return false;
 	}
 
+
 	public RedBlack<Key, Value> put(Key key, Value val){
+		Key current = this.getKey();
+		if (key.compareTo(cuurent) < 0) newLeft = this.getLeft().put(key, val);
+		if (key.compareTo(current) > 0) newRight = this.getRight().put(key, val);
+		if (key.compareTo(current) == 0) return new RedBlackC(curr);
+		else return false;
+	}
 	}
 	public String toString();
 }
